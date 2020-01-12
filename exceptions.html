@@ -1,0 +1,101 @@
+<html>
+<head>
+	<title>Excepcions C#</title>
+	<style>
+		body{
+			font-family:Verdana;
+		}
+		th{
+			font-weight:bold;
+			background-color: #aaaaaa;
+		}
+		th, td{
+			text-align:left;
+			vertical-align:top;
+		}
+		td{
+		font-size:12px;
+		}
+	</style>
+	<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+</head>
+<body>
+	<table style="width:100%">
+		<thead>
+			<th>Excepció</th>
+			<th>Problema</th>
+			<th>Exemples</th>
+		</thead>
+		<tbody>
+			<tr>
+				<td><b>System.FormatException</b><br/>La cadena de entrada no tiene el formato correcto.</td>
+				<td>
+					Estem fent servir alguna de les funcions predefinides per convertir strings en int o en decimal però l'string que passem com paràmetre no es pot convertir en número.
+				</td>
+				<td>
+					<pre class="prettyprint lang-c#">
+int.Parse(""); // <span style="color:red">Dona error perque "" no es un número 'int' vàlid.</span><br/>
+int.Parse("hola"); // <span style="color:red">Dona error perque "hola" no es un número, es una paraula.</span><br/>
+decimal.Parse("e12"); //<span style="color:red">Dona error perque "e12" tot i que conté un número, també te lletres.</span><br/>
+					</pre>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<b>System.Web.HttpException</b><br/>
+					No se encontró ningún campo o propiedad '<i>nombre_campo</i>' en el origen de datos seleccionado.
+				</td>
+				<td>
+					Tenim definida una grid a l'arxiu .aspx i hem possat un nom de columna que no existeix en el dataset que fem servir com a DataSource.
+				</td>
+				<td>
+					Tenim la grid:
+				<pre class="prettyprint lang-html">
+&lt;asp:GridView runat="server" ID="grid"&gt;
+    &lt;Columns&gt;
+	    &lt;asp:BoundField HeaderText="Data" DataField="Fecha" /&gt;
+    &lt;Columns/&gt;
+&lt;/asp:GridView&gt;
+				</pre>
+					I un dataset:
+					<table style="border:1px solid black">
+					<tr>
+						<td style="background-color:blue;color:white;">
+							dtTablaEjemplo
+						</td>
+					</tr>
+					<tr>
+						<td>IDTablaEjemplo</td>
+					</tr>
+					<tr>
+					<td>Descripcion</td>
+					</tr>
+					</table>
+					No hi ha cap propietat <b>Fecha</b> al DataSet.
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<b>System.Data.SqlTypes.SqlTypeException</b><br/>
+					Desbordamiento de SqlDateTime. Debe estar entre 1/1/1753 12:00:00 AM y 12/31/9999 11:59:59 PM.
+				</td>
+				<td>
+					En algún punt del codi estem passant una data a una consulta de BBDD (ja sigui mitjançant datasets o EntityFramework) que no entra al rang de dates permeses de SQL server
+				</td>
+				<td>
+				<pre class="prettyprint lang-c#">
+// Això crea per defecte la data 01/01/0001, <br/>//que es molt més petita que la data mínima que accepta SQL (1/1/1753)
+DateTime data = new DateTime();
+
+Tipos.DSdtTaula ds = new Tipos.DSdtTaula();
+Tipos.DSdtTaulaTableAdapter.dtTaulaAdapter adapter = <br/>    new Tipos.DSdtTaulaTableAdapter.dtTaulaAdapter();
+
+//Quan cridem al métode del dataset que espera la data com paràmetre donarà l'error
+adapter.FillByFiltros(ds.dtTaula, data);
+				</pre>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>
