@@ -95,6 +95,25 @@ adapter.FillByFiltros(ds.dtTaula, data);
 				</pre>
 				</td>
 			</tr>
+			<tr>
+				<td><b>System.NullReferenceException</b><br/>Referencia a objeto no establecida como instancia de un objeto.
+				</td>
+				<td>Hem declarat una variable d'un tipus complexe i hem intentat accedir a una propietat o métode d'ella sense inicialitzar-la fent <i>new</i>
+				</td>
+				<td>
+<pre class="prettyprint lang-c#">
+// Tenim un dataset DSClientes amb una taula Clientes i volem saber quantes files té la taula
+DSClientes ds;
+
+ds.Clientes.Count; // Aquesta linea dona l'excepció
+</pre>
+Per evitar l'exepció, abans d'accedir a les propietats del objecte hauriem d'haver-lo inicialitzat
+<pre class="prettyprint lang-c#">
+DSClientes ds = new DSClientes(); // Declarem la variable i la inicialitzem amb el NEW
+ds.Clientes.Count; //Ara ja no tindrem problemes accedint a la taula interior
+</pre>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 </body>
